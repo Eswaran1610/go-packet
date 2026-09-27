@@ -51,8 +51,10 @@ type WSMessage struct {
 	Payload interface{} `json:"payload"`
 }
 
-// StartControl starts the HTTP server.
-func (s *Server) Start(addr string, staticFS http.FileSystem) error {
+// Handler builds the HTTP mux for the API and, if staticFS is non-nil, the
+// static web UI. staticFS is nil in deployments (e.g. Vercel) where static
+// assets are served separately from this Go handler.
+func (s *Server) Handler(staticFS http.FileSystem) http.Handler {
 	mux := http.NewServeMux()
 
 	// API
@@ -68,11 +70,17 @@ func (s *Server) Start(addr string, staticFS http.FileSystem) error {
 	// WebSocket
 	mux.HandleFunc("/ws", s.handleWS)
 
-	// Static files
-	mux.Handle("/", http.FileServer(staticFS))
+	if staticFS != nil {
+		mux.Handle("/", http.FileServer(staticFS))
+	}
 
+	return mux
+}
+
+// Start runs the HTTP server standalone, blocking until it exits.
+func (s *Server) Start(addr string, staticFS http.FileSystem) error {
 	log.Printf("Server listening on http://%s", addr)
-	return http.ListenAndServe(addr, mux)
+	return http.ListenAndServe(addr, s.Handler(staticFS))
 }
 
 func (s *Server) handleInterfaces(w http.ResponseWriter, r *http.Request) {
