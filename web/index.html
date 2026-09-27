@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go Packet Explorer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="controls">
+            <select id="interfaces" title="Select Interface"></select>
+            <input type="text" id="bpf-filter" placeholder="BPF Filter (e.g. tcp port 80)">
+            <button id="btn-start" class="btn btn-primary">Start</button>
+            <button id="btn-stop" class="btn btn-danger" disabled>Stop</button>
+            <button id="btn-clear" class="btn">Clear</button>
+        </div>
+        <div class="controls right">
+            <input type="text" id="display-filter" placeholder="Display filter (e.g. protocol=tcp)">
+            <input type="file" id="file-import" accept=".pcap,.pcapng" style="display:none">
+            <button id="btn-import" class="btn">Import PCAP</button>
+            <button id="btn-export" class="btn">Export PCAP</button>
+            <span id="status" class="status-badge">Idle</span>
+            <span id="stats"></span>
+        </div>
+    </header>
+
+    <main>
+        <div class="panel-left">
+            <div class="table-container">
+                <table id="packet-table">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Time</th>
+                            <th>Source</th>
+                            <th>Destination</th>
+                            <th>Protocol</th>
+                            <th>Length</th>
+                            <th>Info</th>
+                        </tr>
+                    </thead>
+                    <tbody id="packet-list">
+                        <!-- Packets go here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="panel-right" id="resizer">
+            <div class="tabs">
+                <button class="tab-btn active" data-target="tab-details">Details</button>
+                <button class="tab-btn" data-target="tab-hexdump">Hex</button>
+                <button class="tab-btn" data-target="tab-conversations">Flows</button>
+            </div>
+            
+            <div class="tab-content">
+                <div id="tab-details" class="tab-pane active">
+                    <p class="placeholder">Select a packet to view details</p>
+                    <div id="details-content"></div>
+                </div>
+                
+                <div id="tab-hexdump" class="tab-pane">
+                    <p class="placeholder">Select a packet to view hex dump</p>
+                    <pre id="hexdump-content"></pre>
+                </div>
+
+                <div id="tab-conversations" class="tab-pane">
+                    <div class="controls">
+                        <button id="btn-refresh-flows" class="btn btn-small">Refresh Flows</button>
+                    </div>
+                    <div id="flows-content"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
