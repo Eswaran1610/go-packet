@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "web/**", "use": "@vercel/static" },
+    { "src": "api/index.go", "use": "@vercel/go" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/index.go" },
+    { "src": "/ws", "dest": "/api/index.go" },
+    { "src": "/(.*)", "dest": "/web/$1" }
+  ],
+  "build": {
+    "env": {
+      "GOFLAGS": "-tags=nopcap"
+    }
+  }
+}

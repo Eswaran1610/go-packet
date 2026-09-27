@@ -1,4 +1,5 @@
-// Package capture manages live packet capture using libpcap.
+//go:build !nopcap
+
 package capture
 
 import (
@@ -9,12 +10,6 @@ import (
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/pcap"
 )
-
-// InterfaceInfo holds metadata about a network interface available for capture.
-type InterfaceInfo struct {
-	Name      string   `json:"name"`
-	Addresses []string `json:"addresses"`
-}
 
 // ListInterfaces returns the network interfaces that libpcap can capture on.
 func ListInterfaces() ([]InterfaceInfo, error) {
