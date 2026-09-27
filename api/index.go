@@ -8,7 +8,7 @@ package handler
 import (
 	"net/http"
 
-	"go-packet-explorer/internal/server"
+	"go-packet-explorer/server"
 )
 
 var srv = server.New().Handler(nil)
