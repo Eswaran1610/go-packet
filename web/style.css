@@ -1,4 +1,5 @@
 :root {
+    /* Dark Theme (Default) */
     --bg-color: #1e1e2e;
     --bg-darker: #181825;
     --bg-lighter: #313244;
@@ -15,6 +16,25 @@
     --proto-icmp: #f38ba8;
     --proto-dns: #cba6f7;
     --proto-ipv4: #94e2d5;
+}
+
+[data-theme="light"] {
+    --bg-color: #eff1f5;
+    --bg-darker: #e6e9ef;
+    --bg-lighter: #ccd0da;
+    --text-main: #4c4f69;
+    --text-muted: #5c5f77;
+    --border: #bcc0cc;
+    --accent: #1e66f5;
+    --danger: #d20f39;
+    --success: #40a02b;
+
+    --proto-tcp: #04a5e5;
+    --proto-udp: #df8e1d;
+    --proto-arp: #fe640b;
+    --proto-icmp: #d20f39;
+    --proto-dns: #8839ef;
+    --proto-ipv4: #179299;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
@@ -36,6 +56,8 @@ input:focus { border-color: var(--accent); }
 .btn-danger { background-color: var(--danger); color: var(--bg-darker); border-color: var(--danger); }
 .btn-danger:hover:not(:disabled) { background-color: #eba0ac; }
 .btn-small { padding: 3px 8px; font-size: 0.85em; }
+.btn-icon { padding: 5px; font-size: 1.2em; border: none; background: transparent; display: flex; align-items: center; justify-content: center; }
+.btn-icon:hover { background: var(--bg-lighter); }
 
 .status-badge { padding: 3px 8px; border-radius: 12px; font-size: 0.8em; font-weight: bold; background-color: var(--border); }
 .status-badge.active { background-color: var(--success); color: var(--bg-darker); }

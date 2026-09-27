@@ -7,6 +7,7 @@ const ui = {
     btnClear: document.getElementById('btn-clear'),
     btnExport: document.getElementById('btn-export'),
     btnImport: document.getElementById('btn-import'),
+    btnThemeToggle: document.getElementById('btn-theme-toggle'),
     fileImport: document.getElementById('file-import'),
     btnRefreshFlows: document.getElementById('btn-refresh-flows'),
     status: document.getElementById('status'),
@@ -55,6 +56,18 @@ async function init() {
                 loadFlows();
             }
         });
+    });
+
+    // Theme Toggle
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+    ui.btnThemeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
     });
 
     ui.btnExport.addEventListener('click', () => window.location.href = '/api/export');
