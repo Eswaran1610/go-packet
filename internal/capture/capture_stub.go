@@ -3,19 +3,15 @@
 package capture
 
 import (
-	"errors"
 	"sync"
 
 	"github.com/google/gopacket"
 )
 
-// ErrCaptureUnavailable is returned by every capture operation in this build.
-// It does not fake packets or interfaces — the caller must surface it as-is.
-var ErrCaptureUnavailable = errors.New("live packet capture is unavailable in the cloud deployment")
-
 // ListInterfaces reports no interfaces: this build has no libpcap access.
+// It does not fake interfaces — the caller must surface ErrUnavailable as-is.
 func ListInterfaces() ([]InterfaceInfo, error) {
-	return nil, ErrCaptureUnavailable
+	return nil, ErrUnavailable
 }
 
 // Session is a no-op stand-in that always reports itself as inactive.
@@ -30,7 +26,7 @@ func NewSession() *Session {
 
 // Start always fails: this build cannot open a live capture device.
 func (s *Session) Start(ifaceName, bpfFilter string) error {
-	return ErrCaptureUnavailable
+	return ErrUnavailable
 }
 
 // Stop is a no-op; there is never an active capture to stop.

@@ -3,6 +3,7 @@ package server
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -86,6 +87,15 @@ func (s *Server) Start(addr string, staticFS http.FileSystem) error {
 func (s *Server) handleInterfaces(w http.ResponseWriter, r *http.Request) {
 	ifaces, err := capture.ListInterfaces()
 	if err != nil {
+		if errors.Is(err, capture.ErrUnavailable) {
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusServiceUnavailable)
+			json.NewEncoder(w).Encode(map[string]interface{}{
+				"error":      err.Error(),
+				"interfaces": []capture.InterfaceInfo{},
+			})
+			return
+		}
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -237,7 +247,15 @@ func (s *Server) handleWS(w http.ResponseWriter, r *http.Request) {
 	
 	flusher, ok := w.(http.Flusher)
 	if !ok {
-		http.Error(w, "Streaming unsupported!", http.StatusInternalServerError)
+		// Serverless response writers (e.g. Vercel's Go runtime) buffer the
+		// whole response and never implement http.Flusher, since there is no
+		// long-lived connection to stream over. Report that plainly instead
+		// of pretending a live packet stream is available.
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusServiceUnavailable)
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"error": "live packet streaming is unavailable in this deployment: it requires a persistent connection that serverless functions cannot provide",
+		})
 		return
 	}
 
