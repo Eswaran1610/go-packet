@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"os"
 
-	"go-packet-explorer/internal/server"
+	"go-packet-explorer/server"
 )
 
 //go:embed web/*
