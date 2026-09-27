@@ -8,12 +8,14 @@
 </head>
 <body>
     <header>
-        <div class="controls">
-            <select id="interfaces" title="Select Interface"></select>
-            <input type="text" id="bpf-filter" placeholder="BPF Filter (e.g. tcp port 80)">
-            <button id="btn-start" class="btn btn-primary">Start</button>
-            <button id="btn-stop" class="btn btn-danger" disabled>Stop</button>
-            <button id="btn-clear" class="btn">Clear</button>
+        <div class="controls left-controls">
+            <select id="interfaces" title="Select Interface" class="interfaces-select"></select>
+            <div class="capture-controls">
+                <input type="text" id="bpf-filter" placeholder="BPF Filter (e.g. tcp port 80)">
+                <button id="btn-start" class="btn btn-primary">Start</button>
+                <button id="btn-stop" class="btn btn-danger" disabled>Stop</button>
+                <button id="btn-clear" class="btn">Clear</button>
+            </div>
         </div>
         <div class="controls right">
             <button id="btn-theme-toggle" class="btn btn-icon" title="Toggle Light/Dark Theme">🌓</button>
